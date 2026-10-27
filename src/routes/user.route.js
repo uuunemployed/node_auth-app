@@ -12,11 +12,20 @@ userRouter.post(
   catchError(userController.resetPassword),
 );
 
-userRouter.patch('/profile/name', authMiddleware, userController.updateName);
+userRouter.patch(
+  '/profile/name',
+  authMiddleware,
+  catchError(userController.updateName),
+);
 
 userRouter.patch(
   '/profile/password',
   authMiddleware,
-  userController.changePassword,
+  catchError(userController.changePassword),
 );
-userRouter.patch('/profile/email', authMiddleware, userController.changeEmail);
+
+userRouter.patch(
+  '/profile/email',
+  authMiddleware,
+  catchError(userController.changeEmail),
+);

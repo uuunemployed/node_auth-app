@@ -46,7 +46,7 @@ function findByEmail(email) {
 async function register(name, email, password) {
   const activationToken = uuidv4();
 
-  const existUser = await findByEmail(name);
+  const existUser = await findByEmail(email);
 
   if (existUser) {
     throw ApiError.notFound();

@@ -50,7 +50,7 @@ const login = async (req, res) => {
     throw ApiError.badRequest('Activate the user');
   }
 
-  const isPasswordValid = bcrypt.compare(password, user.password);
+  const isPasswordValid = await bcrypt.compare(password, user.password);
 
   if (!user) {
     throw ApiError.badRequest('No such user');
@@ -92,7 +92,7 @@ const refresh = async (req, res) => {
     throw ApiError.unauthorized('Invalid token');
   }
 
-  const user = await userService.getByEmail(userData.email);
+  const user = await userService.findByEmail(userData.email);
 
   if (!user) {
     throw ApiError.unauthorized('Invalid token');

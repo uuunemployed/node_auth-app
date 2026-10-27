@@ -29,7 +29,7 @@ const resetPassword = async (req, res) => {
   const { password, confirmPassword } = req.body;
 
   if (password !== confirmPassword) {
-    return ApiError('Passwords do not match');
+    throw ApiError('Passwords do not match');
   }
 
   const user = await User.findOne({ where: { resetToken: token } });
@@ -113,7 +113,7 @@ const changeEmail = async (req, res) => {
   const oldEmail = user.email;
 
   user.email = newEmail;
-  user.save();
+  await user.save();
 
   await emailService.sendEmailChangedNotification(oldEmail, newEmail);
 
