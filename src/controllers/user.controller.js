@@ -1,9 +1,9 @@
-import { ApiError } from '../exeptions/api.error.js';
-import { User } from '../models/user.js';
-import { emailService } from '../services/email.service.js';
-import { userService } from '../services/user.service.js';
-import { v4 as uuidv4 } from 'uuid';
-import bcrypt from 'bcrypt';
+const { ApiError } = require('../exeptions/api.error.js');
+const { User } = require('../models/user.js');
+const { emailService } = require('../services/email.service.js');
+const { userService } = require('../services/user.service.js');
+const { v4: uuidv4 } = require('uuid');
+const bcrypt = require('bcrypt');
 
 const forgotPassword = async (req, res) => {
   const { email } = req.body;
@@ -29,7 +29,7 @@ const resetPassword = async (req, res) => {
   const { password, confirmPassword } = req.body;
 
   if (password !== confirmPassword) {
-    throw ApiError('Passwords do not match');
+    throw ApiError.badRequest('Passwords do not match');
   }
 
   const user = await User.findOne({ where: { resetToken: token } });
@@ -54,7 +54,7 @@ const updateName = async (req, res) => {
   const user = await User.findByPk(userId);
 
   if (!user) {
-    throw ApiError('User not found');
+    throw ApiError.notFound('User not found');
   }
 
   user.name = name;
@@ -101,7 +101,7 @@ const changeEmail = async (req, res) => {
   const user = await User.findByPk(userId);
 
   if (!user) {
-    throw ApiError('User not found');
+    throw ApiError.notFound('User not found');
   }
 
   const isPasswordValid = await bcrypt.compare(password, user.password);
@@ -120,7 +120,7 @@ const changeEmail = async (req, res) => {
   res.send({ message: 'Email successfully changed' });
 };
 
-export const userController = {
+module.exports = {
   forgotPassword,
   resetPassword,
   updateName,

@@ -1,5 +1,6 @@
-import nodemailer from 'nodemailer';
-import 'dotenv/config';
+const nodemailer = require('nodemailer');
+
+require('dotenv/config');
 
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,
@@ -10,8 +11,8 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-export function send({ email, subject, html }) {
-  transporter.sendMail({
+function send({ email, subject, html }) {
+  return transporter.sendMail({
     to: email,
     subject: subject,
     html: html,
@@ -53,7 +54,7 @@ async function sendEmailChangedNotification(oldEmail, newEmail) {
   return send(mailOptions);
 }
 
-export const emailService = {
+module.exports = {
   sendActivationEmail,
   sendResetPasswordEmail,
   sendEmailChangedNotification,

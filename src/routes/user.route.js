@@ -1,9 +1,9 @@
-import { Router } from 'express';
-import { catchError } from '../utils/cathcError.js';
-import { userController } from '../controllers/user.controller.js';
-import { authMiddleware } from '../middleware/authMiddleware.js';
+const { Router } = require('express');
+const { catchError } = require('../utils/cathcError.js');
+const { userController } = require('../controllers/user.controller.js');
+const { authMiddleware } = require('../middleware/authMiddleware.js');
 
-export const userRouter = Router();
+const userRouter = Router();
 
 userRouter.post('/forgot-password', catchError(userController.forgotPassword));
 
@@ -29,3 +29,7 @@ userRouter.patch(
   authMiddleware,
   catchError(userController.changeEmail),
 );
+
+module.exports = {
+  userRouter,
+};

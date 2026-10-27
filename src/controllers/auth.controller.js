@@ -1,9 +1,9 @@
-import { ApiError } from '../exeptions/api.error.js';
-import { User } from '../models/user.js';
-import { jwtService } from '../services/jwt.service.js';
-import { tokenService } from '../services/token.service.js';
-import { userService } from '../services/user.service.js';
-import bcrypt from 'bcrypt';
+const { ApiError } = require('../exeptions/api.error.js');
+const { User } = require('../models/user.js');
+const { jwtService } = require('../services/jwt.service.js');
+const { tokenService } = require('../services/token.service.js');
+const { userService } = require('../services/user.service.js');
+const bcrypt = require('bcrypt');
 
 const register = async (req, res) => {
   const { name, email, password } = req.body;
@@ -46,15 +46,15 @@ const login = async (req, res) => {
 
   const user = await userService.findByEmail(email);
 
+  if (!user) {
+    throw ApiError.badRequest('No such user');
+  }
+
   if (user.activationToken !== null) {
     throw ApiError.badRequest('Activate the user');
   }
 
   const isPasswordValid = await bcrypt.compare(password, user.password);
-
-  if (!user) {
-    throw ApiError.badRequest('No such user');
-  }
 
   if (!isPasswordValid) {
     throw ApiError.badRequest('Wrong password');
@@ -106,7 +106,7 @@ const logout = async (req, res) => {
   res.sendStatus(204);
 };
 
-export const authController = {
+module.exports = {
   register,
   activate,
   login,

@@ -1,6 +1,6 @@
-import { ApiError } from '../exeptions/api.error.js';
+const { ApiError } = require('../exeptions/api.error.js');
 
-export const errorMiddleware = (error, req, res, next) => {
+const errorMiddleware = (error, req, res, next) => {
   if (error instanceof ApiError) {
     res.status(error.status).send({
       message: error.message,
@@ -12,4 +12,8 @@ export const errorMiddleware = (error, req, res, next) => {
 
   res.statusCode = 500;
   res.send({ message: 'Server error' });
+};
+
+module.exports = {
+  errorMiddleware,
 };

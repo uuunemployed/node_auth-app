@@ -1,7 +1,7 @@
-import { ApiError } from '../exeptions/api.error.js';
-import { User } from '../models/user.js';
-import { emailService } from './email.service.js';
-import { v4 as uuidv4 } from 'uuid';
+const { ApiError } = require('../exeptions/api.error.js');
+const { User } = require('../models/user.js');
+const { emailService } = require('../services/email.service.js');
+const { v4: uuidv4 } = require('uuid');
 
 function validateName(name) {
   if (!name) {
@@ -59,12 +59,12 @@ async function register(name, email, password) {
     activationToken,
   });
 
-  emailService.sendActivationEmail(email, activationToken);
+  await emailService.sendActivationEmail(email, activationToken);
 
   return user;
 }
 
-export const userService = {
+module.exports = {
   validateName,
   validateEmail,
   validatePassword,
