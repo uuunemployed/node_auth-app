@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const { client } = require('../utils/db.js');
 
-export const User = client.define('User', {
+const User = client.define('User', {
   name: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -22,3 +22,7 @@ export const User = client.define('User', {
     allowNull: true,
   },
 });
+
+module.exports = {
+  User,
+};
